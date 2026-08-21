@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>House Bar & Lounge — Heart Of yoUr Soul matE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"/>
+  <style>
+    /* Flatpickr calendar dark theme */
+    .flatpickr-calendar{background:#1A0A05;border:1px solid #C41230;box-shadow:0 8px 32px rgba(0,0,0,.6);font-family:inherit;border-radius:12px;overflow:hidden}
+    .flatpickr-day{color:#F5EFE4;border-radius:6px}
+    .flatpickr-day:hover,.flatpickr-day:focus{background:#C41230;border-color:#C41230;color:#fff}
+    .flatpickr-day.selected,.flatpickr-day.selected:hover{background:#C41230;border-color:#C41230;color:#fff}
+    .flatpickr-day.today{border-color:#C41230;color:#C41230}
+    .flatpickr-day.today:hover{background:#C41230;color:#fff}
+    .flatpickr-day.disabled,.flatpickr-day.prevMonthDay,.flatpickr-day.nextMonthDay{color:rgba(245,239,228,0.2)}
+    .flatpickr-months,.flatpickr-weekdays{background:#1A0A05}
+    .flatpickr-weekday{color:rgba(245,239,228,0.5);font-weight:600;font-size:0.72rem}
+    .flatpickr-current-month{color:#F5EFE4;font-family:inherit;font-size:1rem;padding-top:6px}
+    .flatpickr-current-month .flatpickr-monthDropdown-months{color:#F5EFE4;background:#1A0A05}
+    .flatpickr-current-month input.cur-year{color:#F5EFE4}
+    .flatpickr-prev-month,.flatpickr-next-month{fill:#F5EFE4 !important;color:#F5EFE4 !important;padding:8px 14px;opacity:1 !important}
+    .flatpickr-prev-month:hover,.flatpickr-next-month:hover{color:#C41230 !important;fill:#C41230 !important;background:rgba(196,18,48,.15)}
+    .flatpickr-prev-month svg,.flatpickr-next-month svg{fill:#F5EFE4 !important;width:14px;height:14px}
+    .flatpickr-prev-month:hover svg,.flatpickr-next-month:hover svg{fill:#C41230 !important}
+    /* Hide year up/down spinners — month arrows only */
+    .numInputWrapper .arrowUp,.numInputWrapper .arrowDown{display:none !important}
+    .numInputWrapper input{color:#F5EFE4;pointer-events:none}
+    .numInputWrapper:hover{background:transparent}
+    .flatpickr-innerContainer{padding:8px}
+
+    /* Date input field styling */
+    .flatpickr-wrapper{width:100%}
+    .flatpickr-input{cursor:pointer !important;background:rgba(245,239,228,0.04) !important;border:1px solid rgba(245,239,228,0.1) !important;border-radius:8px !important;padding:13px 40px 13px 16px !important;color:#F5EFE4 !important;font-family:inherit !important;font-size:0.88rem !important;width:100% !important;box-sizing:border-box !important;transition:border-color 0.2s,background 0.2s !important}
+    .flatpickr-input:focus{border-color:#C41230 !important;background:rgba(196,18,48,0.05) !important}
+    .flatpickr-input::placeholder{color:rgba(245,239,228,0.2) !important}
+    /* Calendar icon via wrapper */
+    .date-icon-wrap{position:relative;width:100%}
+    .date-icon-wrap::after{content:"📅";position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:0.9rem;pointer-events:none;opacity:0.5}
+
+    /* ── TABLE PICKER ── */
+    .table-pick-btn{width:100%;padding:13px 16px;background:rgba(245,239,228,0.04);border:1px solid rgba(245,239,228,0.1);border-radius:8px;color:#F5EFE4;font-family:var(--sans);font-size:0.88rem;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:border-color 0.2s,background 0.2s}
+    .table-pick-btn:hover{border-color:#C41230;background:rgba(196,18,48,0.05)}
+    .table-pick-btn.has-table{border-color:#22c55e;background:rgba(34,197,94,0.05)}
+    .tpb-icon{font-size:1.1rem}
+    .table-pick-status{font-size:0.73rem;color:rgba(245,239,228,0.35);margin-top:5px;padding-left:2px}
+    .table-pick-status.chosen{color:#22c55e}
+
+    /* ── TABLE MAP MODAL ── */
+    .tmap-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;padding:16px}
+    .tmap-overlay.open{opacity:1;pointer-events:all}
+    .tmap-box{background:#110205;border:1px solid rgba(196,18,48,0.4);border-radius:18px;width:min(760px,100%);max-height:90vh;overflow-y:auto;padding:26px 22px}
+    .tmap-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .tmap-head-left h3{font-family:var(--serif);font-size:1.25rem;color:#F5EFE4;margin:0}
+    .tmap-head-left p{font-size:0.73rem;color:rgba(245,239,228,0.35);margin:4px 0 0}
+    .tmap-close{background:none;border:1px solid rgba(245,239,228,0.15);color:#F5EFE4;border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:1rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;line-height:1}
+    .tmap-close:hover{border-color:#C41230;color:#C41230}
+    .tmap-legend{display:flex;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+    .tml{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:rgba(245,239,228,0.55);font-family:var(--sans)}
+    .tml-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+    .tml-dot.avail{background:#22c55e}
+    .tml-dot.taken{background:#C41230}
+    .tml-dot.pick{background:#facc15;border:2px solid rgba(255,255,255,0.4)}
+
+    /* ── FLOOR PLAN ── */
+    .floor-wrap{position:relative;width:100%;padding-bottom:56%;background:#08000f;border-radius:10px;overflow:hidden;border:1px solid rgba(245,239,228,0.07)}
+    .fz{position:absolute;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-align:center;z-index:1;line-height:1.2}
+    .fz--stage{background:#C41230;color:#fff;font-size:clamp(7px,1.3vw,11px)}
+    .fz--dance{background:rgba(80,80,200,0.28);border:1px solid rgba(120,120,255,0.4);color:rgba(200,200,255,0.75);font-size:clamp(5px,0.9vw,8px)}
+    .fz--bar{background:#7a1a1a;color:#fff;font-size:clamp(6px,1vw,9px)}
+    .fz--kitchen{background:#8a6800;color:#fff;font-size:clamp(6px,1vw,9px)}
+    .fz--pool{background:#1a5c2a;color:#fff;font-size:clamp(6px,1vw,9px)}
+    .fz--entrance{background:rgba(245,239,228,0.08);border:1px dashed rgba(245,239,228,0.25);color:rgba(245,239,228,0.5);font-size:clamp(5px,0.9vw,8px)}
+
+    /* ── TABLE DOTS ── */
+    .t-dot{position:absolute;width:20px;height:20px;border-radius:50%;transform:translate(-50%,-50%);cursor:pointer;z-index:3;transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;justify-content:center;font-size:5.5px;font-weight:800;color:rgba(255,255,255,0.85);font-family:sans-serif;user-select:none;border:1.5px solid rgba(255,255,255,0.15)}
+    .t-dot.avail{background:#22c55e;box-shadow:0 0 7px rgba(34,197,94,0.4)}
+    .t-dot.avail:hover{transform:translate(-50%,-50%) scale(1.4);box-shadow:0 0 16px rgba(34,197,94,0.7);z-index:5}
+    .t-dot.taken{background:#C41230;cursor:not-allowed;opacity:0.8}
+    .t-dot.picked{background:#facc15;box-shadow:0 0 16px rgba(250,204,21,0.75);border-color:rgba(255,255,255,0.5);color:#000;transform:translate(-50%,-50%) scale(1.2)}
+
+    .tmap-sel-info{margin-top:14px;padding:12px 16px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:8px;font-size:0.82rem;color:#F5EFE4;display:none}
+    .tmap-sel-info.show{display:block}
+    .tmap-sel-info strong{color:#22c55e}
+    .tmap-confirm{width:100%;padding:13px;background:#C41230;border:none;border-radius:8px;color:#fff;font-family:var(--sans);font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-top:12px;transition:opacity 0.2s;display:block}
+    .tmap-confirm:hover{opacity:0.85}
+    .tmap-confirm:disabled{opacity:0.35;cursor:not-allowed}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#top" class="nav__logo">
+        <div class="nav__mark">
+          <img src="images/House_Logo.png" alt="House Bar &amp; Lounge" style="width:48px;height:48px;object-fit:contain;"/>
+        </div>
+      </a>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#soul">The Soul</a></li>
+        <li><a href="#golden">Golden Hour</a></li>
+        <li><a href="#craft">The Craft</a></li>
+        <li><a href="#house">The House</a></li>
+        <li><a href="#moments">Moments</a></li>
+        <li><a href="#table" class="nav__cta">Claim Your Table</a></li>
+      </ul>
+
+      <button class="nav__burger" id="burger" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       LANDING — EDITORIAL SPLIT
+  ════════════════════════════════════════════ -->
+  <section class="landing" id="top">
+    <div class="landing__left">
+      <p class="landing__label">Est. in Your City</p>
+      <h1 class="landing__title">
+        <em>House</em><br/>
+        Bar<br/>
+        <span>&amp; Lounge</span>
+      </h1>
+      <a href="#soul" class="landing__scroll">
+        Discover the soul <span>↓</span>
+      </a>
+    </div>
+
+    <div class="landing__right">
+      <div class="landing__logo-wrap">
+        <img src="images/House_Logo.png" alt="House Bar &amp; Lounge" class="landing__logo-img"/>
+      </div>
+    </div>
+
+    <div class="landing__ticker">
+      <div class="ticker__track">
+        <span>House Bar &amp; Lounge</span>
+        <span>·</span>
+        <span>Signature Cocktails</span>
+        <span>·</span>
+        <span>Heart Of yoUr Soul matE</span>
+        <span>·</span>
+        <span>House Bar &amp; Lounge</span>
+        <span>·</span>
+        <span>Signature Cocktails</span>
+        <span>·</span>
+        <span>Heart Of yoUr Soul matE</span>
+        <span>·</span>
+        <span>House Bar &amp; Lounge</span>
+        <span>·</span>
+        <span>Signature Cocktails</span>
+        <span>·</span>
+        <span>Heart Of yoUr Soul matE</span>
+        <span>·</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       THE SOUL — ABOUT
+  ════════════════════════════════════════════ -->
+  <section class="soul" id="soul">
+    <div class="soul__eyebrow">
+      <span class="pill">The Soul</span>
+      <div class="pill-line"></div>
+    </div>
+    <div class="soul__body">
+      <div class="soul__quote-col">
+        <blockquote class="soul__quote">
+          "This isn't just a bar.<br/>
+          This is <em>your</em> House."
+        </blockquote>
+        <div class="soul__stats">
+          <div class="soul__stat">
+            <span class="soul__stat-n">30<sup>+</sup></span>
+            <span class="soul__stat-l">Crafted<br/>Cocktails</span>
+          </div>
+          <div class="soul__stat-divider"></div> 
+          <div class="soul__stat">
+            <span class="soul__stat-n">5<sup>PM</sup></span>
+            <span class="soul__stat-l">Doors<br/>Open</span>
+          </div>
+          <div class="soul__stat-divider"></div>
+          <div class="soul__stat">
+            <span class="soul__stat-n">∞</span>
+            <span class="soul__stat-l">Memories<br/>Made</span>
+          </div>
+        </div>
+      </div>
+      <div class="soul__text-col">
+        <p class="soul__intro">
+          House Bar &amp; Lounge was born from a simple idea —
+          that everyone deserves a place that feels like theirs.
+          Not a venue. Not a club. <strong>A house.</strong>
+        </p>
+        <p class="soul__body-text">
+          We are the heart of your night, the warmth at the end of a long week,
+          the clink of a glass shared between people who matter. Every drink
+          we pour is an invitation to settle in, to breathe, to belong.
+        </p>
+        <p class="soul__body-text">
+          Whether you walk in with a story to tell or just in need of a great cocktail —
+          the House is always open. Always yours.
+        </p>
+        <a href="#craft" class="text-link">Explore what we craft →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       THE CRAFT — MENU
+  ════════════════════════════════════════════ -->
+  <section class="craft" id="craft">
+    <div class="craft__header">
+      <span class="pill pill--light">The Craft</span>
+      <h2 class="craft__title">House's<br/><em>Signature</em><br/>Cocktails</h2>
+      <p class="craft__sub">Every glass tells a story — ours starts here</p>
+    </div>
+
+    <div class="craft__tabs">
+      <button class="ctab active" data-cat="signature">Signature</button>
+      <button class="ctab" data-cat="classics">Classics</button>
+      <button class="ctab" data-cat="spirits">Spirits</button>
+      <button class="ctab" data-cat="beer">Beer &amp; Wine</button>
+      <button class="ctab" data-cat="virgin">Virgin</button>
+      <button class="ctab" data-cat="food">Food</button>
+    </div>
+
+    <div class="craft__list" id="craftList">
+
+      <!-- SIGNATURE COCKTAILS -->
+      <article class="drink-row" data-cat="signature">
+        <div class="drink-row__num">01</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info">
+          <h3>Mint To Be</h3>
+          <p>Gin · Elderflower · Lemon · Tonic</p>
+        </div>
+        <div class="drink-row__tag">House Fave</div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+
+      <article class="drink-row" data-cat="signature">
+        <div class="drink-row__num">02</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info">
+          <h3>Passion Punch</h3>
+          <p>Vodka · Passionfruit · Lime · Sugar Syrup · Sparkling Water</p>
+        </div>
+        <div class="drink-row__tag">Bestseller</div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+
+      <article class="drink-row" data-cat="signature">
+        <div class="drink-row__num">03</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info">
+          <h3>Mango Tango</h3>
+          <p>Tequila · Mango Puree · Lime · Chilli Salt Rim</p>
+        </div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+
+      <article class="drink-row" data-cat="signature">
+        <div class="drink-row__num">04</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info">
+          <h3>Berry Bliss</h3>
+          <p>Vodka · Mixed Berries · Lemon · Sugar Syrup · Soda</p>
+        </div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+
+      <article class="drink-row" data-cat="signature">
+        <div class="drink-row__num">05</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info">
+          <h3>Citrus Spark</h3>
+          <p>Gin · Lemon · Grapefruit · Rosemary Syrup · Tonic</p>
+        </div>
+        <div class="drink-row__tag">New</div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+
+      <!-- CLASSIC COCKTAILS -->
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">01</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Mojito</h3><p>Rum · Mint · Lime · Sugar · Soda</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">02</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info"><h3>Margarita</h3><p>Tequila · Triple Sec · Lime · Salt Rim</p></div>
+        <div class="drink-row__tag">Timeless</div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">03</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info"><h3>Cosmopolitan</h3><p>Vodka · Triple Sec · Cranberry · Lime</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">04</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info"><h3>Pina Colada</h3><p>Rum · Coconut Cream · Pineapple</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">05</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Daiquiri</h3><p>Rum · Lime · Sugar Syrup</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">06</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info"><h3>Negroni</h3><p>Gin · Campari · Sweet Vermouth · Orange Twist</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">07</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info"><h3>Old Fashioned</h3><p>Bourbon · Sugar · Angostura Bitters · Orange Peel</p></div>
+        <div class="drink-row__tag">Timeless</div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">08</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info"><h3>Whiskey Sour</h3><p>Bourbon · Lemon · Sugar Syrup · Egg White</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">09</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Aperol Spritz</h3><p>Aperol · Prosecco · Soda · Orange</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">10</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info"><h3>Tom Collins</h3><p>Gin · Lemon · Sugar · Soda</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">11</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info"><h3>Moscow Mule</h3><p>Vodka · Ginger Beer · Lime · Mint</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">12</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info"><h3>Sex on the Beach</h3><p>Vodka · Peach Schnapps · OJ · Cranberry</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">13</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Long Island Iced Tea</h3><p>Vodka · Gin · Rum · Tequila · Triple Sec · Lemon · Cola</p></div>
+        <div class="drink-row__tag">Strong</div>
+        <div class="drink-row__price">Dhs 55</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">14</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info"><h3>Blue Lagoon</h3><p>Vodka · Blue Curaçao · Lemonade</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">15</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info"><h3>Tequila Sunrise</h3><p>Tequila · OJ · Grenadine</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">16</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info"><h3>Gin &amp; Tonic</h3><p>Gin · Tonic Water · Lime · Cucumber</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">17</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Sangria</h3><p>Red Wine · Brandy · OJ · Fruits · Soda</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">18</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info"><h3>Paloma</h3><p>Tequila · Grapefruit Soda · Lime · Salt</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 45</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">19</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info"><h3>Sidecar</h3><p>Cognac · Triple Sec · Lemon · Sugar Rim</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+      <article class="drink-row hidden" data-cat="classics">
+        <div class="drink-row__num">20</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info"><h3>Singapore Sling</h3><p>Gin · Cherry Brandy · Pineapple · Grenadine · Lime</p></div>
+        <div class="drink-row__tag"></div>
+        <div class="drink-row__price">Dhs 50</div>
+      </article>
+
+      <!-- SPIRITS — category table layout -->
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Whiskey</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Chivas Regal 12 Years</span><span class="spirit-price">Dhs 48</span><span class="spirit-price">Dhs 680</span></div>
+        <div class="spirit-row"><span class="spirit-name">Jack Daniels</span><span class="spirit-price">Dhs 48</span><span class="spirit-price">Dhs 600</span></div>
+        <div class="spirit-row"><span class="spirit-name">Johnnie Walker Black</span><span class="spirit-price">Dhs 50</span><span class="spirit-price">Dhs 700</span></div>
+        <div class="spirit-row"><span class="spirit-name">Johnnie Walker Red</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 600</span></div>
+        <div class="spirit-row"><span class="spirit-name">Glenfiddich 12 Years</span><span class="spirit-price">Dhs 55</span><span class="spirit-price">Dhs 780</span></div>
+        <div class="spirit-row"><span class="spirit-name">Jim Beam</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 580</span></div>
+        <div class="spirit-row"><span class="spirit-name">Jameson</span><span class="spirit-price">Dhs 48</span><span class="spirit-price">Dhs 650</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Vodka</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Absolut</span><span class="spirit-price">Dhs 40</span><span class="spirit-price">Dhs 550</span></div>
+        <div class="spirit-row"><span class="spirit-name">Grey Goose</span><span class="spirit-price">Dhs 55</span><span class="spirit-price">Dhs 780</span></div>
+        <div class="spirit-row"><span class="spirit-name">Belvedere</span><span class="spirit-price">Dhs 55</span><span class="spirit-price">Dhs 780</span></div>
+        <div class="spirit-row"><span class="spirit-name">Smirnoff</span><span class="spirit-price">Dhs 38</span><span class="spirit-price">Dhs 500</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Gin</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Tanqueray</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 620</span></div>
+        <div class="spirit-row"><span class="spirit-name">Bombay Sapphire</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 620</span></div>
+        <div class="spirit-row"><span class="spirit-name">Hendrick's</span><span class="spirit-price">Dhs 55</span><span class="spirit-price">Dhs 780</span></div>
+        <div class="spirit-row"><span class="spirit-name">Gordon's</span><span class="spirit-price">Dhs 40</span><span class="spirit-price">Dhs 550</span></div>
+        <div class="spirit-row"><span class="spirit-name">Beefeater</span><span class="spirit-price">Dhs 42</span><span class="spirit-price">Dhs 580</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Tequila</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Jose Cuervo</span><span class="spirit-price">Dhs 42</span><span class="spirit-price">Dhs 580</span></div>
+        <div class="spirit-row"><span class="spirit-name">Patron Silver</span><span class="spirit-price">Dhs 60</span><span class="spirit-price">Dhs 850</span></div>
+        <div class="spirit-row"><span class="spirit-name">Don Julio Blanco</span><span class="spirit-price">Dhs 65</span><span class="spirit-price">Dhs 920</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Cognac</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Hennessy VS</span><span class="spirit-price">Dhs 60</span><span class="spirit-price">Dhs 850</span></div>
+        <div class="spirit-row"><span class="spirit-name">Hennessy VSOP</span><span class="spirit-price">Dhs 75</span><span class="spirit-price">Dhs 1,050</span></div>
+        <div class="spirit-row"><span class="spirit-name">Rémy Martin VSOP</span><span class="spirit-price">Dhs 70</span><span class="spirit-price">Dhs 980</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Rum</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Bacardi White</span><span class="spirit-price">Dhs 40</span><span class="spirit-price">Dhs 550</span></div>
+        <div class="spirit-row"><span class="spirit-name">Captain Morgan</span><span class="spirit-price">Dhs 42</span><span class="spirit-price">Dhs 580</span></div>
+        <div class="spirit-row"><span class="spirit-name">Diplomatico Reserva</span><span class="spirit-price">Dhs 58</span><span class="spirit-price">Dhs 820</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="spirits">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Liquor</span>
+          <span class="spirit-col-label">Single</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Baileys Irish Cream</span><span class="spirit-price">Dhs 38</span><span class="spirit-price">Dhs 520</span></div>
+        <div class="spirit-row"><span class="spirit-name">Kahlúa</span><span class="spirit-price">Dhs 38</span><span class="spirit-price">Dhs 520</span></div>
+        <div class="spirit-row"><span class="spirit-name">Jägermeister</span><span class="spirit-price">Dhs 38</span><span class="spirit-price">Dhs 520</span></div>
+      </div>
+
+      <!-- BEER & WINE — category table layout -->
+      <div class="spirit-category hidden" data-cat="beer">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Draught Beer</span>
+          <span class="spirit-col-label">Glass</span>
+          <span class="spirit-col-label">Tower</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Heineken</span><span class="spirit-price">Dhs 35</span><span class="spirit-price">Dhs 175</span></div>
+        <div class="spirit-row"><span class="spirit-name">Budweiser</span><span class="spirit-price">Dhs 35</span><span class="spirit-price">Dhs 175</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="beer">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Beer Bottle</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Heineken</span><span class="spirit-price">Dhs 38</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Budweiser</span><span class="spirit-price">Dhs 38</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Corona</span><span class="spirit-price">Dhs 40</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Stella Artois</span><span class="spirit-price">Dhs 38</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="beer">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">House Special (Non-Alcoholic Beer)</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Barbican (Malt)</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Barbican Apple</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Barbican Peach</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="beer">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Wine</span>
+          <span class="spirit-col-label">Glass</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">House Red</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 180</span></div>
+        <div class="spirit-row"><span class="spirit-name">House White</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 180</span></div>
+        <div class="spirit-row"><span class="spirit-name">House Rosé</span><span class="spirit-price">Dhs 45</span><span class="spirit-price">Dhs 180</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="beer">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Sparkling</span>
+          <span class="spirit-col-label">Glass</span>
+          <span class="spirit-col-label">Bottle</span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Prosecco</span><span class="spirit-price">Dhs 55</span><span class="spirit-price">Dhs 250</span></div>
+        <div class="spirit-row"><span class="spirit-name">Moët &amp; Chandon</span><span class="spirit-price">—</span><span class="spirit-price">Dhs 650</span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="beer">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Soft Drinks</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Pepsi / 7UP / Mirinda</span><span class="spirit-price">Dhs 15</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Red Bull</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Fresh Juice</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Water (Still / Sparkling)</span><span class="spirit-price">Dhs 10</span><span class="spirit-price"></span></div>
+      </div>
+
+      <!-- VIRGIN COCKTAILS -->
+      <article class="drink-row hidden" data-cat="virgin">
+        <div class="drink-row__num">01</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Tropical Sunrises</h3><p>Mango · Passionfruit · Orange · Grenadine</p></div>
+        <div class="drink-row__tag">0% ABV</div>
+        <div class="drink-row__price">Dhs 42</div>
+      </article>
+      <article class="drink-row hidden" data-cat="virgin">
+        <div class="drink-row__num">02</div>
+        <div class="drink-row__glyph">◈</div>
+        <div class="drink-row__info"><h3>Pina Passion</h3><p>Pineapple · Coconut · Passionfruit · Lime</p></div>
+        <div class="drink-row__tag">0% ABV</div>
+        <div class="drink-row__price">Dhs 42</div>
+      </article>
+      <article class="drink-row hidden" data-cat="virgin">
+        <div class="drink-row__num">03</div>
+        <div class="drink-row__glyph">◉</div>
+        <div class="drink-row__info"><h3>Tamarind Crush</h3><p>Tamarind · Lemon · Ginger · Brown Sugar · Soda</p></div>
+        <div class="drink-row__tag">0% ABV</div>
+        <div class="drink-row__price">Dhs 42</div>
+      </article>
+      <article class="drink-row hidden" data-cat="virgin">
+        <div class="drink-row__num">04</div>
+        <div class="drink-row__glyph">⬟</div>
+        <div class="drink-row__info"><h3>Green Velvet</h3><p>Cucumber · Mint · Lime · Apple · Soda</p></div>
+        <div class="drink-row__tag">0% ABV</div>
+        <div class="drink-row__price">Dhs 42</div>
+      </article>
+      <article class="drink-row hidden" data-cat="virgin">
+        <div class="drink-row__num">05</div>
+        <div class="drink-row__glyph">⬡</div>
+        <div class="drink-row__info"><h3>Berry Breeze</h3><p>Mixed Berries · Hibiscus · Lemon · Honey · Soda</p></div>
+        <div class="drink-row__tag">0% ABV</div>
+        <div class="drink-row__price">Dhs 42</div>
+      </article>
+
+      <!-- FOOD MENU -->
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Starter</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Spring Rolls (6 pcs)</span><span class="spirit-price">Dhs 35</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Chicken Wings</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Edamame</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Garlic Bread</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Sushi Rolls</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">California Roll (8 pcs)</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Spicy Tuna Roll (8 pcs)</span><span class="spirit-price">Dhs 50</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Salmon Avocado Roll (8 pcs)</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Prawn Tempura Roll (8 pcs)</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Dragon Roll (8 pcs)</span><span class="spirit-price">Dhs 65</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Tempura</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Prawn Tempura (6 pcs)</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Vegetable Tempura</span><span class="spirit-price">Dhs 40</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Mixed Tempura</span><span class="spirit-price">Dhs 60</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Deep Fried</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Calamari</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Fish &amp; Chips</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Crispy Tofu</span><span class="spirit-price">Dhs 35</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Onion Rings</span><span class="spirit-price">Dhs 30</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Satay</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Chicken Satay (4 skewers)</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Beef Satay (4 skewers)</span><span class="spirit-price">Dhs 50</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Prawn Satay (4 skewers)</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Noodle</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Pad Thai (Chicken / Prawn)</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Wok Fried Noodles</span><span class="spirit-price">Dhs 50</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Singapore Noodles</span><span class="spirit-price">Dhs 50</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Ramen Bowl</span><span class="spirit-price">Dhs 60</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Chicken Fried Rice</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Classic Fried Rice</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Spicy Fried Rice</span><span class="spirit-price">Dhs 48</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Seafood Fried Rice</span><span class="spirit-price">Dhs 58</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Soup &amp; Side</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Tom Yum Soup</span><span class="spirit-price">Dhs 40</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Miso Soup</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Steamed Rice</span><span class="spirit-price">Dhs 15</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">French Fries</span><span class="spirit-price">Dhs 25</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">Salad</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">Green Papaya Salad</span><span class="spirit-price">Dhs 40</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Caesar Salad</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Thai Beef Salad</span><span class="spirit-price">Dhs 55</span><span class="spirit-price"></span></div>
+      </div>
+
+      <div class="spirit-category hidden" data-cat="food">
+        <div class="spirit-cat-header">
+          <span class="spirit-cat-name">House Special</span>
+          <span class="spirit-col-label">Price</span>
+          <span class="spirit-col-label"></span>
+        </div>
+        <div class="spirit-row"><span class="spirit-name">House Beef Burger</span><span class="spirit-price">Dhs 65</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Grilled Salmon</span><span class="spirit-price">Dhs 85</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Wagyu Beef Sliders (3 pcs)</span><span class="spirit-price">Dhs 75</span><span class="spirit-price"></span></div>
+        <div class="spirit-row"><span class="spirit-name">Truffle Fries</span><span class="spirit-price">Dhs 45</span><span class="spirit-price"></span></div>
+      </div>
+
+    </div>
+
+    <div class="craft__footnote">
+      Prices in AED · Inclusive of all taxes &nbsp;·&nbsp; 18+ to consume alcohol &nbsp;·&nbsp; Please drink responsibly
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       GOLDEN HOUR
+  ════════════════════════════════════════════ -->
+  <section class="golden" id="golden">
+    <div class="golden__inner">
+      <div class="golden__header">
+        <span class="pill pill--gold">Golden Hour</span>
+        <h2 class="golden__title">Every Night<br/><em>9:00 PM – 11:00 PM</em></h2>
+        <p class="golden__sub">Two hours of House magic — every single day</p>
+      </div>
+      <div class="golden__deals">
+        <div class="golden__deal">
+          <div class="golden__deal-icon">🍺</div>
+          <div class="golden__deal-name">Heineken / Budweiser</div>
+          <div class="golden__deal-offer">Buy 2 Get 1 Free</div>
+        </div>
+        <div class="golden__deal golden__deal--highlight">
+          <div class="golden__deal-icon">🥃</div>
+          <div class="golden__deal-name">House Sprint</div>
+          <div class="golden__deal-offer">Buy 1 Get 1 Free</div>
+        </div>
+        <div class="golden__deal">
+          <div class="golden__deal-icon">🍸</div>
+          <div class="golden__deal-name">Signature Cocktail</div>
+          <div class="golden__deal-offer">Buy 1 Get 1 Free</div>
+        </div>
+      </div>
+      <p class="golden__note">Valid daily &nbsp;·&nbsp; 9:00 PM – 11:00 PM &nbsp;·&nbsp; Howard Johnson Plaza by Wyndham, Al Rigga, Dubai</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       THE HOUSE — EXPERIENCE BLOCKS
+  ════════════════════════════════════════════ -->
+  <section class="housexp" id="house">
+    <div class="housexp__intro">
+      <span class="pill">The House</span>
+      <h2 class="housexp__title">More than<br/>a <em>place</em> —<br/>a feeling.</h2>
+    </div>
+
+    <div class="housexp__grid">
+      <div class="hx-card hx-card--dark">
+        <div class="hx-card__num">I</div>
+        <h3>The Bar</h3>
+        <p>Sink into a bar stool and let our mixologists read your mood. From bold to delicate, there is a glass with your name on it.</p>
+        <div class="hx-card__icon">⬡</div>
+      </div>
+      <div class="hx-card hx-card--red">
+        <div class="hx-card__num">II</div>
+        <h3>The Lounge</h3>
+        <p>Plush seating, warm light, the right soundtrack. The lounge is where time slows down and conversations go deep.</p>
+        <div class="hx-card__icon">◈</div>
+      </div>
+      <div class="hx-card hx-card--cream">
+        <div class="hx-card__num">III</div>
+        <h3>Private Rooms</h3>
+        <p>Celebrate in your own corner of the House. Birthdays, anniversaries, company nights — fully curated for your occasion.</p>
+        <div class="hx-card__icon">◉</div>
+      </div>
+      <div class="hx-card hx-card--outline">
+        <div class="hx-card__num">IV</div>
+        <h3>Live Nights</h3>
+        <p>Select nights come alive with curated sounds — DJs who understand that music at House should feel personal, not commercial.</p>
+        <div class="hx-card__icon">⬟</div>
+      </div>
+    </div>
+
+    <!-- Hours strip -->
+    <div class="hours-strip">
+      <div class="hours-strip__label">Opening Hours</div>
+      <div class="hours-strip__items">
+        <div class="hours-item">
+          <span class="hours-day">Every Day</span>
+          <span class="hours-dots"></span>
+          <span class="hours-time">5 PM → 4 AM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       MOMENTS — GALLERY / INSTAGRAM
+  ════════════════════════════════════════════ -->
+  <section class="moments" id="moments">
+    <div class="moments__header">
+      <span class="pill">Moments</span>
+      <h2 class="moments__title">Lovely<br/><em>Guests</em></h2>
+      <a href="https://instagram.com/house.barandlounge" target="_blank" class="moments__ig">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        @house.barandlounge
+      </a>
+    </div>
+
+    <div class="moments__mosaic">
+      <div class="mosaic-cell mosaic-cell--a">
+        <img src="images/House_Moment1.jpg" alt="House Bar &amp; Lounge Moments" class="mosaic-img"/>
+      </div>
+      <div class="mosaic-cell mosaic-cell--b">
+        <img src="images/House_Moment2.jpg" alt="House Bar &amp; Lounge Moments" class="mosaic-img"/>
+      </div>
+      <div class="mosaic-cell mosaic-cell--c">
+        <img src="images/House_Moment3.jpg" alt="House Bar &amp; Lounge Moments" class="mosaic-img"/>
+      </div>
+      <div class="mosaic-cell mosaic-cell--d">
+        <img src="images/House_Moment4.jpg" alt="House Bar &amp; Lounge Moments" class="mosaic-img"/>
+      </div>
+      <div class="mosaic-cell mosaic-cell--e">
+        <img src="images/House_Moment5.jpg" alt="House Bar &amp; Lounge Moments" class="mosaic-img"/>
+      </div>
+      <div class="mosaic-cell mosaic-cell--f">
+        <img src="images/House_Moment6.jpg" alt="House Bar &amp; Lounge Moments" class="mosaic-img"/>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       CLAIM YOUR TABLE — RESERVATION
+  ════════════════════════════════════════════ -->
+  <section class="table-section" id="table">
+    <div class="table-section__left">
+      <span class="pill">Claim Your Table</span>
+      <h2 class="table-section__title">
+        Reserve<br/>Your<br/><em>Night</em>
+      </h2>
+      <p class="table-section__sub">
+        Your spot at the House is one message away.
+        Fill in the details and we'll hold it for you.
+      </p>
+      <div class="table-section__alt">
+        <p>Prefer to reach us directly?</p>
+        <a href="tel:+971542954461" class="alt-link">054 295 4461</a>
+        <span class="alt-sep">·</span>
+        <a href="https://facebook.com/housebarandlounge" target="_blank" class="alt-link">Facebook</a>
+        <span class="alt-sep">·</span>
+        <a href="https://www.instagram.com/house.barandlounge" target="_blank" class="alt-link">Instagram</a>
+      </div>
+      <div class="table-section__address">
+        <span class="addr-label">Find Us</span>
+        <span class="addr-line">Howard Johnson Plaza by Wyndham Dubai Deira</span>
+        <span class="addr-line">23C 26B St – Al Muraqqabat, Al Rigga, Dubai</span>
+      </div>
+    </div>
+
+    <div class="table-section__form-wrap">
+      <form id="resForm" action="php/reservation.php" method="POST" class="res-form">
+        <div class="res-form__row">
+          <div class="rf-group">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="Full name" required/>
+          </div>
+          <div class="rf-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@email.com" required/>
+          </div>
+        </div>
+        <div class="res-form__row">
+          <div class="rf-group">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="+1 234 567 890"/>
+          </div>
+          <div class="rf-group">
+            <label>Guests</label>
+            <select name="guests">
+              <option value="1">1 person</option>
+              <option value="2" selected>2 people</option>
+              <option value="3">3 people</option>
+              <option value="4">4 people</option>
+              <option value="5">5 people</option>
+              <option value="6+">6+ people</option>
+            </select>
+          </div>
+        </div>
+        <div class="res-form__row">
+          <div class="rf-group">
+            <label>Date</label>
+            <div class="date-icon-wrap">
+              <input type="text" name="date" id="resDate" placeholder="Select a date" required/>
+            </div>
+          </div>
+          <div class="rf-group">
+            <label>Time</label>
+            <input type="time" name="time" required/>
+          </div>
+        </div>
+        <div class="rf-group">
+          <label>Table</label>
+          <button type="button" class="table-pick-btn" id="openTableMap">
+            <span class="tpb-icon">🪑</span>
+            <span id="tpbLabel">View Floor Plan &amp; Choose Your Table</span>
+          </button>
+          <input type="hidden" name="table" id="selectedTableInput"/>
+          <p class="table-pick-status" id="tablePickStatus">No table selected yet</p>
+        </div>
+
+        <div class="rf-group">
+          <label>Occasion (optional)</label>
+          <select name="occasion">
+            <option value="">Just a great night</option>
+            <option value="birthday">Birthday Celebration</option>
+            <option value="date">Date Night</option>
+            <option value="friends">Friends Night Out</option>
+            <option value="corporate">Corporate</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="rf-group">
+          <label>Special Requests</label>
+          <textarea name="notes" rows="3" placeholder="Anything we should know…"></textarea>
+        </div>
+        <button type="submit" class="res-btn">Reserve My Table</button>
+        <div class="res-success" id="resSuccess">
+          ✓ Reservation received — we'll confirm you shortly.
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="images/House_Logo.png" alt="House Bar &amp; Lounge" class="footer__mask-svg" style="width:56px;height:56px;object-fit:contain;"/>
+        <div>
+          <p class="footer__name">HOUSE Bar &amp; Lounge</p>
+          <p class="footer__tagline">Heart Of yo<b>U</b>r Soul mat<b>E</b></p>
+        </div>
+      </div>
+
+      <nav class="footer__nav">
+        <a href="#soul">The Soul</a>
+        <a href="#craft">The Craft</a>
+        <a href="#house">The House</a>
+        <a href="#moments">Moments</a>
+        <a href="#table">Reserve</a>
+      </nav>
+
+      <div class="footer__social">
+        <a href="https://instagram.com/house.barandlounge" target="_blank" class="fsocial">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram
+        </a>
+        <a href="https://facebook.com/housebarandlounge" target="_blank" class="fsocial">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2026 House Bar &amp; Lounge. All rights reserved.</span>
+      <span>Drink responsibly · 18+ only</span>
+    </div>
+  </footer>
+
+  <!-- TABLE MAP MODAL -->
+  <div class="tmap-overlay" id="tableMapOverlay">
+    <div class="tmap-box">
+      <div class="tmap-head">
+        <div class="tmap-head-left">
+          <h3>House Floor Plan</h3>
+          <p>Click a green table to select it · Red = already booked</p>
+        </div>
+        <button class="tmap-close" id="closeTableMap">✕</button>
+      </div>
+
+      <div class="tmap-legend">
+        <span class="tml"><span class="tml-dot avail"></span>Available</span>
+        <span class="tml"><span class="tml-dot taken"></span>Booked</span>
+        <span class="tml"><span class="tml-dot pick"></span>Your Selection</span>
+      </div>
+
+      <div class="floor-wrap" id="floorWrap" style="padding-bottom:0;height:auto;background:transparent;border:none;position:relative">
+        <img src="images/House_Layout.png" alt="House Floor Plan" style="width:100%;display:block;border-radius:10px;opacity:0.92"/>
+        <!-- Table dots injected by JS (positioned absolute over the image) -->
+      </div>
+
+      <div class="tmap-sel-info" id="tmapSelInfo">
+        Selected: <strong id="tmapSelLabel">—</strong> &nbsp;·&nbsp; <span id="tmapSelType">—</span> Package
+      </div>
+      <button class="tmap-confirm" id="tmapConfirmBtn" disabled>Confirm Table</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+  <script>
+    flatpickr('#resDate', {
+      minDate: 'today',
+      dateFormat: 'D, d M Y',
+      disableMobile: true,
+      animate: true,
+      showMonths: 1,
+      monthSelectorType: 'static',
+      locale: { firstDayOfWeek: 1 }
+    });
+
+    /* ── TABLE MAP ── */
+    (function(){
+      // Table definitions matching the provided floor map image
+      // x%, y% = position as % of floor-wrap container
+      var TABLES = [
+        {id:'B1',  label:'B1',  type:'Black', x:19.1, y:40.6, booked:false},
+        {id:'B2',  label:'B2',  type:'Black', x:25.2, y:35,   booked:false},
+        {id:'B3',  label:'B3',  type:'Black', x:31.9, y:30.4, booked:false},
+        {id:'B4',  label:'B4',  type:'Black', x:45.1, y:34.1, booked:false},
+        {id:'B5',  label:'B5',  type:'Black', x:62.4, y:49.2, booked:false},
+        {id:'B6',  label:'B6',  type:'Black', x:76.9, y:47.3, booked:false},
+        {id:'B7',  label:'B7',  type:'Black', x:87.2, y:37,   booked:false},
+        {id:'B8',  label:'B8',  type:'Black', x:83.8, y:51.3, booked:false},
+        {id:'B9',  label:'B9',  type:'Black', x:26.4, y:46.9, booked:true },
+        {id:'B10', label:'B10', type:'Black', x:55.1, y:46,   booked:true },
+        {id:'B11', label:'B11', type:'Black', x:66.8, y:37.4, booked:true },
+        {id:'B12', label:'B12', type:'Black', x:76,   y:30,   booked:true },
+        {id:'B13', label:'B13', type:'Black', x:37.7, y:27.2, booked:true },
+        {id:'B14', label:'B14', type:'Black', x:32.8, y:42,   booked:false},
+        {id:'B15', label:'B15', type:'Black', x:39.3, y:37.4, booked:true },
+        {id:'B16', label:'B16', type:'Black', x:71.4, y:41.3, booked:true },
+        {id:'B17', label:'B17', type:'Black', x:81.7, y:33.7, booked:true },
+        {id:'B18', label:'B18', type:'Black', x:68,   y:54.1, booked:false},
+        {id:'B19', label:'B19', type:'Black', x:76.3, y:60.5, booked:false},
+        {id:'B20', label:'B20', type:'Black', x:92.4, y:41.8, booked:false},
+        {id:'B21', label:'B21', type:'Black', x:96.7, y:47.6, booked:false},
+      ];
+
+      var selectedId = null;
+      var overlay    = document.getElementById('tableMapOverlay');
+      var wrap       = document.getElementById('floorWrap');
+      var selInfo    = document.getElementById('tmapSelInfo');
+      var selLabel   = document.getElementById('tmapSelLabel');
+      var selType    = document.getElementById('tmapSelType');
+      var confirmBtn = document.getElementById('tmapConfirmBtn');
+      var openBtn    = document.getElementById('openTableMap');
+      var closeBtn   = document.getElementById('closeTableMap');
+      var hiddenIn   = document.getElementById('selectedTableInput');
+      var statusEl   = document.getElementById('tablePickStatus');
+      var tpbLabel   = document.getElementById('tpbLabel');
+
+      // Build dots
+      TABLES.forEach(function(t){
+        var dot = document.createElement('div');
+        dot.className = 't-dot ' + (t.booked ? 'taken' : 'avail');
+        dot.style.left = t.x + '%';
+        dot.style.top  = t.y + '%';
+        dot.title = t.booked ? t.label + ' — Booked' : t.label + ' (' + t.type + ' Package)';
+        dot.textContent = t.label;
+        if (!t.booked) {
+          dot.addEventListener('click', function(){
+            // deselect previous
+            var prev = wrap.querySelector('.t-dot.picked');
+            if (prev) prev.classList.replace('picked','avail');
+            // select this
+            dot.classList.replace('avail','picked');
+            selectedId = t.id;
+            selLabel.textContent = t.label;
+            selType.textContent  = t.type;
+            selInfo.classList.add('show');
+            confirmBtn.disabled = false;
+          });
+        }
+        wrap.appendChild(dot);
+      });
+
+      openBtn.addEventListener('click', function(){ overlay.classList.add('open'); });
+      closeBtn.addEventListener('click', function(){ overlay.classList.remove('open'); });
+      overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.classList.remove('open'); });
+
+      confirmBtn.addEventListener('click', function(){
+        if (!selectedId) return;
+        var t = TABLES.find(function(x){ return x.id===selectedId; });
+        hiddenIn.value    = selectedId;
+        statusEl.textContent = '✓ Table ' + t.label + ' selected (' + t.type + ' Package)';
+        statusEl.classList.add('chosen');
+        tpbLabel.textContent = 'Table ' + t.label + ' — ' + t.type + ' Package';
+        openBtn.classList.add('has-table');
+        overlay.classList.remove('open');
+      });
+    })();
+  </script>
+</body>
+</html>

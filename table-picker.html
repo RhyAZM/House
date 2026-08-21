@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Table Coordinate Picker</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; color: #f5efe4; font-family: monospace; padding: 20px; }
+  h1 { font-size: 18px; margin-bottom: 8px; color: #c41230; }
+  p { font-size: 13px; margin-bottom: 16px; opacity: 0.7; }
+  #wrap {
+    position: relative;
+    display: inline-block;
+    cursor: crosshair;
+    border: 2px solid #c41230;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
+  }
+  #wrap img { width: 100%; display: block; }
+  .pin {
+    position: absolute;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #00e676;
+    border: 2px solid #fff;
+    transform: translate(-50%, -50%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: bold; color: #000;
+    pointer-events: none;
+    box-shadow: 0 0 6px rgba(0,230,118,0.8);
+  }
+  #log {
+    margin-top: 20px;
+    background: #1a0a05;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px;
+    max-height: 340px;
+    overflow-y: auto;
+  }
+  #log h2 { font-size: 14px; margin-bottom: 10px; color: #c41230; }
+  .entry { font-size: 12px; margin-bottom: 4px; color: #a0c8ff; }
+  #copyBtn {
+    margin-top: 12px;
+    background: #c41230;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: monospace;
+  }
+  #copyBtn:hover { background: #a00e26; }
+  #clearBtn {
+    margin-top: 12px;
+    margin-left: 10px;
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: monospace;
+  }
+  #output {
+    margin-top: 16px;
+    background: #0d0d0d;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 11px;
+    line-height: 1.8;
+    white-space: pre;
+    overflow-x: auto;
+    display: none;
+  }
+  #counter { font-size: 13px; margin-bottom: 10px; color: #f5efe4; }
+  select {
+    background: #222; color: #f5efe4; border: 1px solid #555;
+    padding: 6px 10px; border-radius: 5px; font-size: 13px;
+    margin-bottom: 14px; margin-right: 8px;
+  }
+  label { font-size: 13px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<h1>🎯 Table Coordinate Picker</h1>
+<p>Click directly on each table in the floor plan. A green dot appears where you clicked and the coordinates are logged below.</p>
+
+<div style="margin-bottom:12px">
+  <label>Table Type:</label>
+  <select id="typeSelect">
+    <option value="Black">Black Package</option>
+    <option value="Red">Red Package</option>
+    <option value="White">White Package</option>
+    <option value="Walk-in">Walk-in</option>
+  </select>
+  <label>Booked?</label>
+  <select id="bookedSelect">
+    <option value="false">No (Available)</option>
+    <option value="true">Yes (Booked)</option>
+  </select>
+</div>
+
+<div id="wrap">
+  <img id="floorImg" src="images/House_Layout.png" alt="Floor Plan"/>
+</div>
+
+<div id="log">
+  <h2>Clicked Coordinates</h2>
+  <div id="counter">0 tables logged</div>
+  <div id="entries"></div>
+</div>
+
+<button id="copyBtn">📋 Generate JS Array</button>
+<button id="clearBtn">🗑 Clear All</button>
+
+<pre id="output"></pre>
+
+<script>
+  var clicks = [];
+  var wrap = document.getElementById('wrap');
+  var entries = document.getElementById('entries');
+  var counter = document.getElementById('counter');
+  var output = document.getElementById('output');
+
+  // Type counters for auto-naming
+  var typeCounts = { Black: 0, Red: 0, White: 0, 'Walk-in': 0 };
+  var typePrefix = { Black: 'B', Red: 'R', White: 'W', 'Walk-in': 'WI' };
+
+  wrap.addEventListener('click', function(e) {
+    var rect = wrap.getBoundingClientRect();
+    var xPct = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+    var yPct = ((e.clientY - rect.top)  / rect.height * 100).toFixed(1);
+
+    var type   = document.getElementById('typeSelect').value;
+    var booked = document.getElementById('bookedSelect').value;
+
+    typeCounts[type]++;
+    var prefix = typePrefix[type];
+    var id = prefix + typeCounts[type];
+    var label = id;
+
+    // Place pin
+    var pin = document.createElement('div');
+    pin.className = 'pin';
+    pin.style.left = xPct + '%';
+    pin.style.top  = yPct + '%';
+    pin.style.background = booked === 'true' ? '#f44336' : '#00e676';
+    pin.textContent = label;
+    wrap.appendChild(pin);
+
+    // Log entry
+    var obj = { id: id, label: label, type: type, x: parseFloat(xPct), y: parseFloat(yPct), booked: booked === 'true' };
+    clicks.push(obj);
+
+    var div = document.createElement('div');
+    div.className = 'entry';
+    div.textContent = id + ' → x:' + xPct + '%, y:' + yPct + '%  [' + type + '] ' + (booked === 'true' ? '🔴 Booked' : '🟢 Available');
+    entries.appendChild(div);
+
+    counter.textContent = clicks.length + ' table' + (clicks.length !== 1 ? 's' : '') + ' logged';
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function() {
+    clicks = [];
+    typeCounts = { Black: 0, Red: 0, White: 0, 'Walk-in': 0 };
+    entries.innerHTML = '';
+    counter.textContent = '0 tables logged';
+    output.style.display = 'none';
+    // Remove pins
+    var pins = wrap.querySelectorAll('.pin');
+    pins.forEach(function(p){ p.remove(); });
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function() {
+    if (clicks.length === 0) { alert('Click on some tables first!'); return; }
+    var lines = clicks.map(function(t) {
+      var bookedStr = t.booked ? 'true ' : 'false';
+      return "        {id:'" + t.id + "', label:'" + t.label + "', type:'" + t.type + "',  x:" + t.x + ", y:" + t.y + ", booked:" + bookedStr + "},";
+    });
+    var result = "      var TABLES = [\n" + lines.join('\n') + "\n      ];";
+    output.textContent = result;
+    output.style.display = 'block';
+
+    // Also copy to clipboard if available
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(result).then(function() {
+        document.getElementById('copyBtn').textContent = '✅ Copied to Clipboard!';
+        setTimeout(function(){ document.getElementById('copyBtn').textContent = '📋 Generate JS Array'; }, 2000);
+      });
+    }
+  });
+</script>
+</body>
+</html>
